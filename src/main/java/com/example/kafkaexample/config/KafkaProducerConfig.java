@@ -14,12 +14,12 @@ import java.util.Map;
 
 @Configuration
 public class KafkaProducerConfig {
-    @Value("${spring.kafka.bootsrtap-servers}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
     public Map<String, Object> producerConfig(){
         Map<String,Object> temp = new HashMap<>();
-        temp.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, producerConfig());
+        temp.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         temp.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         temp.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return temp;
@@ -28,10 +28,10 @@ public class KafkaProducerConfig {
     public ProducerFactory<String,String> producerFactory(){
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
-
+    @Bean
     public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String,String> producerFactory){
         return new KafkaTemplate<>(producerFactory);
     }
 
-    
+
 }
